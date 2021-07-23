@@ -8,7 +8,6 @@ function App() {
   useEffect(() => {
     const getActivities = async () => {
       const res = await axios.get("http://localhost:5000/api/activities");
-      console.log(res);
       setActivities(res.data);
     };
 
@@ -23,7 +22,7 @@ function App() {
       </Header>
       <List>
         {activities.map((activity: any) => (
-          <List.Item>{activity.title}</List.Item>
+          <List.Item key={activity.id}>{activity.title}</List.Item>
         ))}
       </List>
     </div>
