@@ -6,19 +6,21 @@ interface Props {
   activity: Activity | undefined;
   handleFormClose: () => void;
   handleSubmitActivityForm: (activity: Activity) => void;
+  submitting: boolean;
 }
 
 const ActivityForm = ({
   activity,
   handleFormClose,
   handleSubmitActivityForm,
+  submitting,
 }: Props) => {
   const initialState = activity ?? {
     id: "",
     title: "",
     category: "",
     description: "",
-    date: new Date(),
+    date: "",
     city: "",
     venue: "",
   };
@@ -89,7 +91,12 @@ const ActivityForm = ({
             type="submit"
             content="Cancel"
           />
-          <Button onClick={handleSubmit} type="submit" content="Submit" />
+          <Button
+            loading={submitting}
+            onClick={handleSubmit}
+            type="submit"
+            content="Submit"
+          />
         </div>
       </Form>
     </Segment>
