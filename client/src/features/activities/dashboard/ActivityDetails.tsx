@@ -1,17 +1,19 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
 
-interface Props {
-  activity: Activity;
-  handleCancelActivity: () => void;
-  handleFormOpen: (id?: string) => void;
-}
-const ActivityDetails = ({
-  activity,
-  handleCancelActivity,
-  handleFormOpen,
-}: Props) => {
+import { useStore } from "../../../app/stores/store";
+
+const _ActivityDetails = () => {
+  const { activityStore } = useStore();
+  const {
+    selectedActivity: activity,
+    cancelSelectedActivity,
+    openForm,
+  } = activityStore;
+
+  if (!activity) return <></>;
+
   return (
     <Card fluid>
       <Card.Content>
@@ -23,14 +25,14 @@ const ActivityDetails = ({
       </Card.Content>
       <Card.Content extra>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button basic onClick={handleCancelActivity}>
+          <Button basic onClick={cancelSelectedActivity}>
             Cancel
           </Button>
-          <Button onClick={() => handleFormOpen(activity.id)}>Edit</Button>
+          <Button onClick={() => openForm(activity.id)}>Edit</Button>
         </div>
       </Card.Content>
     </Card>
   );
 };
 
-export { ActivityDetails };
+export const ActivityDetails = observer(_ActivityDetails);

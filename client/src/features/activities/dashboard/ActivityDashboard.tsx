@@ -1,51 +1,15 @@
-import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import React from "react";
 import { Button, Grid, GridColumn, Icon } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+
+import { useStore } from "../../../app/stores/store";
 import { ActivityDetails } from "./ActivityDetails";
 import { ActivityForm } from "./ActivityForm";
 import { ActivityList } from "./ActivityList";
 
-interface Props {
-  activities: Activity[];
-  handleCreateOrEditActivity: (activity: Activity) => void;
-  handleDeleteActivity: (id: string) => void;
-  submitting: boolean;
-}
-
-const ActivityDashboard = ({
-  activities,
-  handleCreateOrEditActivity,
-  handleDeleteActivity,
-  submitting,
-}: Props) => {
-  const [selectedActivity, setSelectedActivity] = useState<
-    Activity | undefined
-  >();
-
-  const [editMode, setEditMode] = useState(false);
-
-  const handleFormOpen = (id?: string) => {
-    id ? handleSelectedActivity(id) : handleCancelActivity();
-    setEditMode(true);
-  };
-
-  const handleFormClose = () => {
-    setEditMode(false);
-  };
-
-  const handleSelectedActivity = (id: string) => {
-    setSelectedActivity(activities.find((x) => x.id === id));
-  };
-
-  const handleCancelActivity = () => {
-    setSelectedActivity(undefined);
-  };
-
-  const handleSubmitActivityForm = (activity: Activity) => {
-    handleCreateOrEditActivity(activity);
-    setEditMode(false);
-    setSelectedActivity(activity);
-  };
+const Dashboard = () => {
+  const { activityStore } = useStore();
+  const { selectedActivity, editMode } = activityStore;
 
   return (
     <Grid>
@@ -59,41 +23,27 @@ const ActivityDashboard = ({
         >
           <h1>Activity Dashboard</h1>
           <div>
-            <Button onClick={() => handleFormOpen()} icon labelPosition="left">
+            <Button
+              onClick={() => activityStore.openForm()}
+              icon
+              labelPosition="left"
+            >
               <Icon name="add" />
               Create activity
             </Button>
           </div>
         </div>
 
-        <ActivityList
-          activities={activities}
-          handleDeleteActivity={handleDeleteActivity}
-          handleSelectedActivity={handleSelectedActivity}
-          submitting={submitting}
-        />
+        <ActivityList />
       </Grid.Column>
       <GridColumn width="6">
         <div style={{ position: "sticky", marginTop: "2rem", top: "6rem" }}>
-          {selectedActivity && !editMode && (
-            <ActivityDetails
-              activity={selectedActivity}
-              handleCancelActivity={handleCancelActivity}
-              handleFormOpen={handleFormOpen}
-            />
-          )}
-          {editMode && (
-            <ActivityForm
-              handleSubmitActivityForm={handleSubmitActivityForm}
-              handleFormClose={handleFormClose}
-              activity={selectedActivity}
-              submitting={submitting}
-            />
-          )}
+          {selectedActivity && !editMode && <ActivityDetails />}
+          {editMode && <ActivityForm />}
         </div>
       </GridColumn>
     </Grid>
   );
 };
 
-export { ActivityDashboard };
+export const ActivityDashboard = observer(Dashboard);

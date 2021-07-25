@@ -1,20 +1,19 @@
+import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
 
-interface Props {
-  activity: Activity | undefined;
-  handleFormClose: () => void;
-  handleSubmitActivityForm: (activity: Activity) => void;
-  submitting: boolean;
-}
+import { useStore } from "../../../app/stores/store";
 
-const ActivityForm = ({
-  activity,
-  handleFormClose,
-  handleSubmitActivityForm,
-  submitting,
-}: Props) => {
+const _ActivityForm = () => {
+  const { activityStore } = useStore();
+  const {
+    selectedActivity: activity,
+    closeForm,
+    createActivity,
+    updateActivity,
+    loading: submitting,
+  } = activityStore;
+
   const initialState = activity ?? {
     id: "",
     title: "",
@@ -41,7 +40,8 @@ const ActivityForm = ({
 
   const handleSubmit = () => {
     console.log(inputs);
-    handleSubmitActivityForm(inputs);
+    // createOrEdit(inputs);
+    activity ? updateActivity(inputs) : createActivity(inputs);
   };
 
   return (
@@ -85,12 +85,7 @@ const ActivityForm = ({
           onChange={handleChange}
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button
-            onClick={handleFormClose}
-            basic
-            type="submit"
-            content="Cancel"
-          />
+          <Button onClick={closeForm} basic type="submit" content="Cancel" />
           <Button
             loading={submitting}
             onClick={handleSubmit}
@@ -103,4 +98,4 @@ const ActivityForm = ({
   );
 };
 
-export { ActivityForm };
+export const ActivityForm = observer(_ActivityForm);
