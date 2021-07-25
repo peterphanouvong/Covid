@@ -1,46 +1,30 @@
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { Button, Grid, GridColumn, Icon } from "semantic-ui-react";
+import { Grid, GridColumn } from "semantic-ui-react";
 
+import { Loading } from "../../../app/layout/Loading";
 import { useStore } from "../../../app/stores/store";
-import { ActivityDetails } from "./ActivityDetails";
-import { ActivityForm } from "./ActivityForm";
+
 import { ActivityList } from "./ActivityList";
 
 const Dashboard = () => {
   const { activityStore } = useStore();
-  const { selectedActivity, editMode } = activityStore;
+  const { loadActivities, activityRegistry, loadingInitial } = activityStore;
+
+  useEffect(() => {
+    if (activityRegistry.size <= 1) loadActivities();
+  }, [loadActivities, activityRegistry]);
+
+  if (loadingInitial) return <Loading content="Loading app" />;
 
   return (
     <Grid>
       <Grid.Column width="10">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <h1>Activity Dashboard</h1>
-          <div>
-            <Button
-              onClick={() => activityStore.openForm()}
-              icon
-              labelPosition="left"
-            >
-              <Icon name="add" />
-              Create activity
-            </Button>
-          </div>
-        </div>
-
+        <h1>Activity Dashboard</h1>
         <ActivityList />
       </Grid.Column>
       <GridColumn width="6">
-        <div style={{ position: "sticky", marginTop: "2rem", top: "6rem" }}>
-          {selectedActivity && !editMode && <ActivityDetails />}
-          {editMode && <ActivityForm />}
-        </div>
+        <h2>Activity filter</h2>
       </GridColumn>
     </Grid>
   );

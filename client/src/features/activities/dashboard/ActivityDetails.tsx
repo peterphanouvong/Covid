@@ -1,18 +1,26 @@
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Card, Button } from "semantic-ui-react";
+import { useParams } from "react-router";
 
 import { useStore } from "../../../app/stores/store";
+import { Loading } from "../../../app/layout/Loading";
+import { Link } from "react-router-dom";
 
 const _ActivityDetails = () => {
   const { activityStore } = useStore();
   const {
     selectedActivity: activity,
-    cancelSelectedActivity,
-    openForm,
+    loadActivity,
+    loadingInitial,
   } = activityStore;
+  const { id } = useParams<{ id: string }>();
 
-  if (!activity) return <></>;
+  useEffect(() => {
+    if (id) loadActivity(id);
+  }, [loadActivity, id]);
+
+  if (loadingInitial || !activity) return <Loading content="loading" />;
 
   return (
     <Card fluid>
@@ -25,10 +33,12 @@ const _ActivityDetails = () => {
       </Card.Content>
       <Card.Content extra>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button basic onClick={cancelSelectedActivity}>
+          <Button as={Link} to={`/activities`} basic>
             Cancel
           </Button>
-          <Button onClick={() => openForm(activity.id)}>Edit</Button>
+          <Button as={Link} to={`/manage/${activity.id}`}>
+            Edit
+          </Button>
         </div>
       </Card.Content>
     </Card>

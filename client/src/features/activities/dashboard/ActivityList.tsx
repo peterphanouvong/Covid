@@ -1,5 +1,6 @@
-import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
 import { Item, Segment, Button, Label } from "semantic-ui-react";
 
 import { useStore } from "../../../app/stores/store";
@@ -9,7 +10,6 @@ const _ActivityList = () => {
   const {
     loading: submitting,
     deleteActivity,
-    selectActivity,
     activitiesByDate,
   } = activityStore;
   const [target, setTarget] = useState("");
@@ -29,7 +29,9 @@ const _ActivityList = () => {
           <Item.Group>
             <Item>
               <Item.Content style={{ padding: "0.5rem 0" }}>
-                <Item.Header as="a">{activity.title}</Item.Header>
+                <Item.Header as={Link} to={`/activities/${activity.id}`}>
+                  {activity.title}
+                </Item.Header>
                 <Item.Meta>{activity.date}</Item.Meta>
                 <Item.Description>
                   <div>{activity.description}</div>
@@ -57,7 +59,8 @@ const _ActivityList = () => {
                         loading={submitting && target === activity.id}
                       />
                       <Button
-                        onClick={() => selectActivity(activity.id)}
+                        as={Link}
+                        to={`/activities/${activity.id}`}
                         content="View"
                       />
                     </div>

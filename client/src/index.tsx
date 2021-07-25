@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "semantic-ui-css/semantic.min.css";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./app/layout/App";
 import "./app/layout/index.css";
@@ -9,7 +10,9 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </StoreContext.Provider>,
   document.getElementById("root")
 );

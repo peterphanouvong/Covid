@@ -1,20 +1,24 @@
+import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import { v4 as uuid } from "uuid";
 
 import { useStore } from "../../../app/stores/store";
+import { Loading } from "../../../app/layout/Loading";
 
 const _ActivityForm = () => {
   const { activityStore } = useStore();
   const {
-    selectedActivity: activity,
-    closeForm,
     createActivity,
     updateActivity,
     loading: submitting,
+    loadActivity,
+    loadingInitial,
   } = activityStore;
+  const { id } = useParams<{ id: string }>();
 
-  const initialState = activity ?? {
+  const [inputs, setInputs] = useState({
     id: "",
     title: "",
     category: "",
@@ -22,9 +26,11 @@ const _ActivityForm = () => {
     date: "",
     city: "",
     venue: "",
-  };
+  });
 
-  const [inputs, setInputs] = useState(initialState);
+  useEffect(() => {
+    if (id) loadActivity(id).then((activity) => setInputs(activity!));
+  }, [id, loadActivity]);
 
   const handleChange = (
     e:
@@ -38,11 +44,25 @@ const _ActivityForm = () => {
     });
   };
 
+  const history = useHistory();
+
   const handleSubmit = () => {
-    console.log(inputs);
-    // createOrEdit(inputs);
-    activity ? updateActivity(inputs) : createActivity(inputs);
+    if (inputs.id.length === 0) {
+      let newActivity = {
+        ...inputs,
+        id: uuid(),
+      };
+      createActivity(newActivity).then(() => {
+        return history.push(`/activities/${newActivity.id}`);
+      });
+    } else {
+      updateActivity(inputs).then(() => {
+        return history.push(`/activities/${inputs.id}`);
+      });
+    }
   };
+
+  if (loadingInitial) return <Loading content="loading activity..." />;
 
   return (
     <Segment clearing>
@@ -85,7 +105,13 @@ const _ActivityForm = () => {
           onChange={handleChange}
         />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button onClick={closeForm} basic type="submit" content="Cancel" />
+          <Button
+            as={Link}
+            to="/activities"
+            basic
+            type="submit"
+            content="Cancel"
+          />
           <Button
             loading={submitting}
             onClick={handleSubmit}
