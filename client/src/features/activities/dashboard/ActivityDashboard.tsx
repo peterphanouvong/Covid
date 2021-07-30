@@ -6,6 +6,7 @@ import { Loading } from "../../../app/layout/Loading";
 import { useStore } from "../../../app/stores/store";
 
 import { ActivityList } from "./ActivityList";
+import { ActivityFilters } from "./ActivityFilters";
 
 const Dashboard = () => {
   const { activityStore } = useStore();
@@ -24,7 +25,7 @@ const Dashboard = () => {
         <ActivityList />
       </Grid.Column>
       <GridColumn width="6">
-        <h2>Activity filter</h2>
+        <ActivityFilters />
       </GridColumn>
     </Grid>
   );

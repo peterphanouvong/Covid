@@ -10,6 +10,10 @@ const Navbar = () => {
           Reactivities
         </Menu.Item>
         <Menu.Item as={NavLink} to="/activities" name="Activities" />
+        <Menu.Item as={NavLink} to="/colors" name="Colors" />
+        <Menu.Item as={NavLink} to="/population" name="Population" />
+        <Menu.Item as={NavLink} to="/covid" name="Covid" />
+        <Menu.Item as={NavLink} to="/globe" name="Globe" />
         <Menu.Item>
           <Button
             as={NavLink}

@@ -7,7 +7,11 @@ import { Navbar } from "./Navbar";
 import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
 import { HomePage } from "../../features/activities/home/HomePage";
 import { ActivityForm } from "../../features/activities/dashboard/ActivityForm";
-import { ActivityDetails } from "../../features/activities/dashboard/ActivityDetails";
+import { ActivityDetails } from "../../features/activities/details/ActivityDetails";
+import { ColorDashboard } from "../../features/colors/ColorDashboard";
+import { PopulationDashboard } from "../../features/population/PopulationDashboard";
+import { CovidDashboard } from "../../features/covid/CovidDashboard";
+import { GlobeDashboard } from "../../features/globe/GlobeDashboard";
 
 function App() {
   const location = useLocation();
@@ -21,6 +25,10 @@ function App() {
           <>
             <Navbar />
             <Container style={{ marginTop: "7rem" }}>
+              <Route exact path="/colors" component={ColorDashboard} />
+              <Route exact path="/globe" component={GlobeDashboard} />
+              <Route exact path="/covid" component={CovidDashboard} />
+              <Route exact path="/population" component={PopulationDashboard} />
               <Route exact path="/activities" component={ActivityDashboard} />
               <Route exact path="/activities/:id" component={ActivityDetails} />
               <Route

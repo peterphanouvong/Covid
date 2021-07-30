@@ -1,0 +1,9 @@
+.bar {
+  fill: dodgerblue;
+  transition: opacity 0.2s ease;
+}
+
+.bar:hover {
+  cursor: pointer;
+  opacity: 0.65;
+}

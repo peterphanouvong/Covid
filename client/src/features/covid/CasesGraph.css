@@ -1,0 +1,67 @@
+.case-graph__path {
+  opacity: 0.4;
+  stroke-width: 1.5;
+}
+
+.case-graph__path--active {
+  opacity: 1;
+  stroke-width: 1.75;
+}
+
+.case-graph__cover {
+  fill: none;
+  pointer-events: all;
+}
+
+.case-graph__slider {
+  stroke: #d4d4d4;
+  stroke-width: 1;
+  fill: none;
+  opacity: 0;
+}
+.case-graph__slider--active {
+  opacity: 0.5;
+}
+
+.case-graph__dash {
+  stroke: #d4d4d4;
+  stroke-width: 1;
+  fill: none;
+}
+
+.case-graph__location-label {
+  font-size: 0.9rem;
+  fill: #aaa;
+}
+
+.case-graph__location-label:hover {
+  cursor: default;
+  fill: #333;
+}
+
+.case-graph__dot {
+  opacity: 0;
+}
+
+.case-graph__dot--active {
+  opacity: 1;
+}
+
+.case-graph__info-box {
+  transition: 0.2 ease;
+}
+
+.case-graph__info-box__box {
+  display: flex;
+  fill: white;
+  stroke: #aaa;
+  opacity: 0.9;
+}
+
+.case-graph__info-box__location-text {
+  font-size: 0.9rem;
+}
+
+.case-graph__info-box__date-text {
+  font-weight: bold;
+}
